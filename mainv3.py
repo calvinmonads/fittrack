@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from datetime import datetime
 
 def log_workout():
@@ -42,22 +43,19 @@ def log_workout():
     if workout_data:
         df = pd.DataFrame(workout_data)
         try:
-            existing = pd.read_csv("workout_log.csv")
+            existing = pd.read_csv("fittrack_log.csv")
             df = pd.concat([existing, df], ignore_index=True)
         except FileNotFoundError:
             pass
 
-        df.to_csv("workout_log.csv", index=False)
+        df.to_csv("fittrack_log.csv", index=False)
         print("\n✅ Workout saved successfully!")
     else:
         print("No data entered. Nothing saved.")
 
-import matplotlib.pyplot as plt
-
 def analytics():
-    """Display a simple analytics summary and bar chart."""
     try:
-        df = pd.read_csv("workout_log.csv")
+        df = pd.read_csv("fittrack_log.csv")
     except FileNotFoundError:
         print("⚠️ No workout log found yet! Run a workout first.")
         return
@@ -73,7 +71,7 @@ def analytics():
     print("\n📊 Workout Summary (Sets per Muscle Group):")
     print(summary)
 
-    # Plot bar chart
+    # Plot the chart
     plt.figure(figsize=(8, 5))
     plt.bar(summary["Muscle Group"], summary["Total Sets"])
     plt.title("Total Sets per Muscle Group")
@@ -83,10 +81,16 @@ def analytics():
     plt.tight_layout()
     plt.show()
 
+# --- Main menu ---
 if __name__ == "__main__":
-    log_workout()
-    see_analytics = input("\nWould you like to see analytics now? (y/n): ").strip().lower()
-    if see_analytics == "y":
+    print("\n🏋️ FITTRACK MENU")
+    print("1️⃣  Log a new workout")
+    print("2️⃣  View analytics")
+    choice = input("> ").strip()
+
+    if choice == "1":
+        log_workout()
+    elif choice == "2":
         analytics()
     else:
-        print("👋 See you next time!")
+        print("❌ Invalid option. Please choose 1 or 2.")
