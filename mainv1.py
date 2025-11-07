@@ -35,4 +35,5 @@ print(workouts)
 
 # Save to CSV
 workouts.to_csv("fittrack_log.csv", index=False)
-print("\n💾 Saved to fittrack_log.csv")
+print("\n💾 Saved to fittrack_log.csv"
+)
