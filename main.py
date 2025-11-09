@@ -1,38 +1,46 @@
-import pandas as pd
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from database import Workout, SessionLocal, init_db
+from pydantic import BaseModel
+from typing import List
 
-# Create an empty DataFrame to store workouts
-columns = ["Muscle Group", "Set #", "Movement", "Reps", "Equipment", "Weight", "Notes"]
-workouts = pd.DataFrame(columns=columns)
+app = FastAPI(title="FitTrack API")
 
-print("🏋️ Welcome to FitTrack!")
-print("Type 'q' anytime to finish logging.\n")
+# Initialize the database when app starts
+init_db()
 
-while True:
-    muscle = input("Enter muscle group (or 'q' to quit): ").strip()
-    if muscle.lower() == 'q':
-        break
+# Dependency for getting DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-    set_number = 1
-    while True:
-        print(f"\n--- {muscle.upper()} | Set {set_number} ---")
-        movement = input("Movement: ")
-        if movement.lower() == 'q':
-            break
-        reps = input("Reps: ")
-        equipment = input("Equipment: ")
-        weight = input("Weight (kg): ")
-        notes = input("Notes: ")
+# --- Pydantic model for data validation ---
+class WorkoutCreate(BaseModel):
+    muscle_group: str
+    movement: str
+    reps: int
+    weight: float
+    equipment: str
+    notes: str | None = None
 
-        workouts.loc[len(workouts)] = [muscle, set_number, movement, reps, equipment, weight, notes]
-        set_number += 1
+# --- ROUTES ---
 
-        add_more = input("\nAdd another set for this muscle group? (y/n): ").strip().lower()
-        if add_more != 'y':
-            break
+@app.get("/")
+def home():
+    return {"message": "Welcome to FitTrack API"}
 
-print("\n✅ Workout complete!")
-print(workouts)
+@app.post("/workouts/", response_model=dict)
+def create_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
+    new_workout = Workout(**workout.dict())
+    db.add(new_workout)
+    db.commit()
+    db.refresh(new_workout)
+    return {"message": "Workout added successfully", "id": new_workout.id}
 
-# Save to CSV
-workouts.to_csv("fittrack_log.csv", index=False)
-print("\n💾 Saved to fittrack_log.csv")
+@app.get("/workouts/", response_model=List[dict])
+def list_workouts(db: Session = Depends(get_db)):
+    workouts = db.query(Workout).all()
+    return [w.__dict__ for w in workouts]

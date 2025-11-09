@@ -1,0 +1,4 @@
+exit()
+
+
+python mainv3.py

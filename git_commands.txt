@@ -1,0 +1,5 @@
+git add mainv3.py
+
+git commit -m "menu option analitics"
+
+git push
