@@ -1,0 +1,15 @@
+fittrack/
+│
+├── main.py               ← PROGRAM: runs FastAPI backend
+├── cli_fittrack.py       ← PROGRAM: command-line version
+├── database.py           ← PROGRAM: handles database logic
+│
+├── fittrack_log.csv      ← DATA: stores workout logs
+├── fittrack.db           ← DATA: SQLite database file
+│
+├── .gitignore            ← CONFIG: tells Git what to ignore
+├── requirements.txt      ← CONFIG: lists Python dependencies
+│
+├── venv/                 ← ENVIRONMENT: contains Python interpreter + packages
+│
+└── .git/                 ← GIT SYSTEM: tracks code history & commits

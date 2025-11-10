@@ -1,0 +1,10 @@
+# Ignore virtual environments
+venv/
+
+# Ignore Python cache folders
+__pycache__/
+
+# Ignore database and local data files
+*.db
+*.csv
+*.log

@@ -1,0 +1,26 @@
+                     ┌──────────────────────────┐
+                     │        GitHub Repo       │
+                     │ (stores code snapshots)  │
+                     └────────────┬─────────────┘
+                                  │
+                           git push / pull
+                                  │
+          ┌───────────────────────┴───────────────────────┐
+          │                                               │
+┌────────────────────┐                     ┌────────────────────────┐
+│  Your Local Folder │                     │   Virtual Environment  │
+│   (fittrack/)      │                     │        (venv/)         │
+│                    │                     │ (Python + dependencies)│
+│  ├─ main.py        │                     └──────────┬─────────────┘
+│  ├─ cli_fittrack.py│                                │
+│  ├─ database.py    │                                │
+│  ├─ .gitignore     │                                │
+│  └─ requirements.txt│                               │
+└────────┬────────────┘                                │
+         │                                              │
+         │ runs via `python`                            │
+         │                                              │
+┌────────▼──────────┐                ┌──────────────────▼───────────────────┐
+│    Python on Mac  │  interprets →  │ CPU executes commands (the actual   │
+│ (installed system)│                │ machine-level instructions)         │
+└───────────────────┘                └──────────────────────────────────────┘
