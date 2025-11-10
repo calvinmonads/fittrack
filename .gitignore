@@ -1,1 +1,4 @@
 fittrack/
+venv/
+venv/
+__pycache__/
